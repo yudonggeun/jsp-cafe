@@ -80,4 +80,19 @@ public class BeanContainer {
             throw new RuntimeException("빈으로 등록할 클래스의 생성자는 하나이어야 합니다.");
         }
     }
+
+    /**
+     * 빈 컨테이너에 저장된 빈을 모두 조회합니다. 찾고자하는 클래스의 자식 클래스 타입의 빈까지 모두 조회하여 반환합니다.
+     * 만약 찾는 빈이 존재하지 않는다면 빈 리스트를 반환합니다.
+     * @return
+     */
+    public <T> List<T> getBeans(Class<T> clazz){
+        List<T> beans = new ArrayList<>();
+        for (Class<?> type : this.beans.keySet()) {
+            if (clazz.isAssignableFrom(type)) {
+                beans.add((T) this.beans.get(type));
+            }
+        }
+        return beans;
+    }
 }
