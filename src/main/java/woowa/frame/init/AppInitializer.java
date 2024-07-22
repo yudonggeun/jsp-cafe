@@ -64,7 +64,7 @@ public class AppInitializer implements ServletContextListener {
                     try {
                         Constructor<?> constructor = clazz.getConstructor();
                         Initializer initializer = (Initializer) constructor.newInstance();
-                        initializer.init(classes);
+                        initializer.init(beanContainer);
                         logger.info("init {}", constructor.getName());
                     } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                              IllegalAccessException e) {

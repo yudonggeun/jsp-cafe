@@ -1,5 +1,7 @@
 package woowa.frame.init;
 
+import woowa.frame.core.BeanContainer;
+
 public interface Initializer {
 
     /**
@@ -7,7 +9,7 @@ public interface Initializer {
      * 해당 인터페이스를 구현한다면 자동으로 초기화 로직이 실행됩니다. <br/>
      *
      * @see AppInitializer 초기화 메서드를 호출하는 초기화 핸들러
-     * @param clazz 어플리케이션에서 사용하는 모든 클래스 타입
+     * @param beanContainer 등록된 빈을 조회할 수 있는 빈 컨테이너
      */
-    void init(Class<?>... clazz);
+    void init(BeanContainer beanContainer);
 }
