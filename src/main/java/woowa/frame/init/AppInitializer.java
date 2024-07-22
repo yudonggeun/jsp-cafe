@@ -35,9 +35,10 @@ public class AppInitializer implements ServletContextListener {
 
         // create bean
         BeanContainer beanContainer = new BeanContainer();
-        beanContainer.registerBean(beanContainer);
+        beanContainer.registerBeanObject(beanContainer);
 
         for (Class<?> clazz : classes) {
+            if (clazz.isAnnotation() || clazz.isInterface()) continue;
             for (Annotation annotation : clazz.getAnnotations()) {
                 // Component 어노테이션이 적용된 클래스를 등록한다.
                 if (annotation.annotationType().equals(Component.class) ||

@@ -1,16 +1,20 @@
 package woowa.frame.core;
 
-import woowa.frame.core.annotation.Component;
-import woowa.frame.web.annotation.Router;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BeanContainer {
 
+    private final Logger logger = LoggerFactory.getLogger(BeanContainer.class);
     private final Map<Class<?>, Object> beans = new HashMap<>();
 
     /**
@@ -29,7 +33,7 @@ public class BeanContainer {
      *
      * @param bean 등록하고자하는 빈 객체
      */
-    public void registerBean(Object bean) {
+    public void registerBeanObject(Object bean) {
         beans.put(bean.getClass(), bean);
     }
 
@@ -75,12 +79,14 @@ public class BeanContainer {
 
             try {
                 bean = constructor.newInstance(parameters.toArray());
-                beans.put(bean.getClass(), bean);
+                beans.put(clazz, bean);
                 return bean;
             } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                logger.error("빈으로 등록할 클래스의 생성자를 호출할 수 없습니다.");
                 throw new RuntimeException("빈으로 등록할 클래스의 생성자를 호출할 수 없습니다.");
             }
         } else {
+            logger.error("빈으로 등록할 클래스의 생성자는 하나이어야 합니다.");
             throw new RuntimeException("빈으로 등록할 클래스의 생성자는 하나이어야 합니다.");
         }
     }
