@@ -1,5 +1,9 @@
 package woowa.frame.core;
 
+import woowa.frame.core.annotation.Component;
+import woowa.frame.web.annotation.Router;
+
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
@@ -14,7 +18,7 @@ public class BeanContainer {
      *
      * @param classes 등록하고자하는 빈의 클래스
      */
-    public void registerBean(Class<?>...classes) {
+    public void registerBean(Class<?>... classes) {
         for (Class<?> clazz : classes) {
             beans.put(clazz, null);
         }
@@ -84,13 +88,30 @@ public class BeanContainer {
     /**
      * 빈 컨테이너에 저장된 빈을 모두 조회합니다. 찾고자하는 클래스의 자식 클래스 타입의 빈까지 모두 조회하여 반환합니다.
      * 만약 찾는 빈이 존재하지 않는다면 빈 리스트를 반환합니다.
+     *
      * @return
      */
-    public <T> List<T> getBeans(Class<T> clazz){
+    public <T> List<T> getBeans(Class<T> clazz) {
         List<T> beans = new ArrayList<>();
         for (Class<?> type : this.beans.keySet()) {
             if (clazz.isAssignableFrom(type)) {
                 beans.add((T) this.beans.get(type));
+            }
+        }
+        return beans;
+    }
+
+    /**
+     * 빈 컨테이너에서 해당 어노테이션을 가지는 빈 객체를 모두 조회합니다.
+     *
+     * @param annotation 어노테이션 조건
+     * @return 어노테이션을 가지는 빈 객체 리스트
+     */
+    public List<Object> getBeansWithAnnotation(Class<? extends Annotation> annotation) {
+        List<Object> beans = new ArrayList<>();
+        for (Class<?> type : this.beans.keySet()) {
+            if (type.isAnnotationPresent(annotation)) {
+                beans.add(getBean(type));
             }
         }
         return beans;
