@@ -34,6 +34,14 @@ public class DispatcherServlet extends HttpServlet {
         if (routeTableRow.isPresent()) {
             Object result = routeTableRow.get().handle(request, response);
 
+            if (result instanceof String) {
+                String stringResult = (String) result;
+                if(stringResult.startsWith("redirect:")) {
+                    response.sendRedirect(stringResult.substring(9));
+                    return;
+                }
+            }
+
             response.setContentType("text/html");
 
             PrintWriter out = response.getWriter();

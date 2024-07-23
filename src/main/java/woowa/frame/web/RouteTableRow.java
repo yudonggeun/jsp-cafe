@@ -26,7 +26,7 @@ public class RouteTableRow {
 
     public boolean isMatch(HttpServletRequest request) {
         return this.method.equals(request.getMethod()) &&
-               this.urlTemplate.equals(request.getPathInfo());
+               this.urlTemplate.equals(request.getRequestURI());
     }
 
     public Object handle(HttpServletRequest request, HttpServletResponse response) {
