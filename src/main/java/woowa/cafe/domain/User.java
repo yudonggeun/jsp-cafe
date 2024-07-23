@@ -19,6 +19,10 @@ public class User {
         return id;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
     public String getPassword() {
         return password;
     }

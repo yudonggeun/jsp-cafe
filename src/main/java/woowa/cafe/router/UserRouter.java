@@ -2,10 +2,13 @@ package woowa.cafe.router;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import woowa.cafe.dto.CreateUserRequest;
+import woowa.cafe.dto.UserInfo;
+import woowa.cafe.dto.request.CreateUserRequest;
 import woowa.cafe.service.UserService;
 import woowa.frame.web.annotation.Router;
 import woowa.frame.web.annotation.HttpMapping;
+
+import java.util.List;
 
 @Router
 public class UserRouter {
@@ -14,6 +17,13 @@ public class UserRouter {
 
     public UserRouter(UserService userService) {
         this.userService = userService;
+    }
+
+    @HttpMapping(method = "GET", urlTemplate = "/users")
+    public String getUsers(HttpServletRequest request, HttpServletResponse response) {
+        List<UserInfo> users = userService.getUsers();
+        request.setAttribute("users", users);
+        return "/template/user/list.jsp";
     }
 
     @HttpMapping(method = "POST", urlTemplate = "/user/create")

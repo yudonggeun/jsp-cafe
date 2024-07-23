@@ -36,8 +36,12 @@ public class DispatcherServlet extends HttpServlet {
 
             if (result instanceof String) {
                 String stringResult = (String) result;
-                if(stringResult.startsWith("redirect:")) {
+                if (stringResult.startsWith("redirect:")) {
                     response.sendRedirect(stringResult.substring(9));
+                    return;
+                }
+                if (stringResult.endsWith(".jsp")) {
+                    forward(request, response, stringResult);
                     return;
                 }
             }
@@ -50,13 +54,16 @@ public class DispatcherServlet extends HttpServlet {
             out.println("<h1>" + result + "</h1>");
             out.println("</body></html>");
         } else {
-            try {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("error/404.html");
-                dispatcher.forward(request, response);
-            } catch (ServletException e) {
-                e.printStackTrace();
-                throw e;
-            }
+            forward(request, response, "/error/404.html");
+        }
+    }
+
+    private void forward(HttpServletRequest request, HttpServletResponse response, String path) {
+        try {
+            RequestDispatcher dispatcher = request.getRequestDispatcher(path);
+            dispatcher.forward(request, response);
+        } catch (ServletException | IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

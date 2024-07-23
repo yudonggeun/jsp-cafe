@@ -1,9 +1,12 @@
 package woowa.cafe.service;
 
 import woowa.cafe.domain.User;
-import woowa.cafe.dto.CreateUserRequest;
+import woowa.cafe.dto.UserInfo;
+import woowa.cafe.dto.request.CreateUserRequest;
 import woowa.cafe.repository.UserRepository;
 import woowa.frame.core.annotation.Component;
+
+import java.util.List;
 
 @Component
 public class UserService {
@@ -17,5 +20,11 @@ public class UserService {
     public void createUser(CreateUserRequest request) {
         User user = new User(request.userId(), request.password(), request.name(), request.email());
         userRepository.save(user);
+    }
+
+    public List<UserInfo> getUsers() {
+        return userRepository.findAll().stream()
+                .map(user -> new UserInfo(user.getUserId(), user.getName(), user.getEmail()))
+                .toList();
     }
 }
