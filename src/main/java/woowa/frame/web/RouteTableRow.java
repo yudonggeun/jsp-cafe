@@ -26,7 +26,7 @@ public class RouteTableRow {
 
     public boolean isMatch(HttpServletRequest request) {
         return this.method.equals(request.getMethod()) &&
-               this.urlTemplate.equals(request.getRequestURI());
+               this.IsUrlMatch(request.getRequestURI());
     }
 
     public Object handle(HttpServletRequest request, HttpServletResponse response) {
@@ -43,4 +43,24 @@ public class RouteTableRow {
         }
     }
 
+    private boolean IsUrlMatch(String url) {
+
+        String[] templateParts = this.urlTemplate.split("/");
+        String[] requestParts = url.split("/");
+
+        if (templateParts.length != requestParts.length) {
+            return false;
+        }
+
+        for (int i = 0; i < templateParts.length; i++) {
+            if (templateParts[i].startsWith("{") && templateParts[i].endsWith("}")) {
+                continue;
+            }
+            if (!templateParts[i].equals(requestParts[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

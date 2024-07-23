@@ -37,4 +37,17 @@ public class UserRouter {
         userService.createUser(createUserRequest);
         return "redirect:/static/user/list.html";
     }
+
+    @HttpMapping(method = "GET", urlTemplate = "/user/{userId}")
+    public String getProfile(HttpServletRequest request, HttpServletResponse response) {
+        String userId = request.getRequestURI().substring(6);
+        UserInfo user = userService.getProfile(userId);
+
+        if(user == null){
+            return "redirect:/error/404.html";
+        } else {
+            request.setAttribute("user", user);
+            return "/template/user/profile.jsp";
+        }
+    }
 }

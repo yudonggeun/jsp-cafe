@@ -24,7 +24,17 @@ public class UserService {
 
     public List<UserInfo> getUsers() {
         return userRepository.findAll().stream()
-                .map(user -> new UserInfo(user.getUserId(), user.getName(), user.getEmail()))
+                .map(user -> new UserInfo(user.getId(), user.getUserId(), user.getName(), user.getEmail()))
                 .toList();
+    }
+
+    public UserInfo getProfile(String userId) {
+        User user = userRepository.findById(userId);
+
+        if (user == null) {
+            return null;
+        }
+
+        return new UserInfo(user.getId(), user.getUserId(), user.getName(), user.getEmail());
     }
 }
