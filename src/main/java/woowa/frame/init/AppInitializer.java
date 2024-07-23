@@ -34,7 +34,7 @@ public class AppInitializer implements ServletContextListener {
 
 
         // create bean
-        BeanContainer beanContainer = new BeanContainer();
+        BeanContainer beanContainer = BeanContainer.getInstance();
         beanContainer.registerBeanObject(beanContainer);
 
         for (Class<?> clazz : classes) {

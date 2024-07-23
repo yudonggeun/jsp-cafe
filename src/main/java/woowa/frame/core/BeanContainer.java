@@ -14,6 +14,14 @@ import java.util.Map;
 
 public class BeanContainer {
 
+    private static BeanContainer INSTANCE = new BeanContainer();
+
+    public static BeanContainer getInstance() {
+        return INSTANCE;
+    }
+
+    private BeanContainer() { }
+
     private final Logger logger = LoggerFactory.getLogger(BeanContainer.class);
     private final Map<Class<?>, Object> beans = new HashMap<>();
 
