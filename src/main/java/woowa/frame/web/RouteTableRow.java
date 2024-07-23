@@ -1,6 +1,7 @@
 package woowa.frame.web;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,10 +29,10 @@ public class RouteTableRow {
                this.urlTemplate.equals(request.getPathInfo());
     }
 
-    public Object handle(HttpServletRequest request) {
+    public Object handle(HttpServletRequest request, HttpServletResponse response) {
         try {
             Object result = null;
-            result = invokeMethod.invoke(handler, request);
+            result = invokeMethod.invoke(handler, request, response);
             return result;
         } catch (IllegalAccessException e) {
             logger.error("메서드 실행 파라미터가 잘못되었습니다.");
