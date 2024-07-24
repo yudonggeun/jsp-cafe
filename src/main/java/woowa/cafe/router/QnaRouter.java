@@ -2,11 +2,19 @@ package woowa.cafe.router;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import woowa.cafe.dto.request.CreateQuestionRequest;
+import woowa.cafe.service.QnaService;
 import woowa.frame.web.annotation.HttpMapping;
 import woowa.frame.web.annotation.Router;
 
 @Router
 public class QnaRouter {
+
+    private final QnaService qnaService;
+
+    public QnaRouter(QnaService qnaService) {
+        this.qnaService = qnaService;
+    }
 
     @HttpMapping(method = "GET", urlTemplate = "/")
     public String showQuestions(HttpServletRequest request, HttpServletResponse response) {
@@ -15,6 +23,17 @@ public class QnaRouter {
 
     @HttpMapping(method = "POST", urlTemplate = "/question")
     public String createQuestion(HttpServletRequest request, HttpServletResponse response) {
-        return "redirect:/";
+        CreateQuestionRequest req = new CreateQuestionRequest(
+                request.getParameter("authorName"),
+                request.getParameter("title"),
+                request.getParameter("content")
+        );
+
+        try {
+            qnaService.createQna(req);
+            return "redirect:/";
+        } catch (RuntimeException ex) {
+            return "redirect:/static/qna/form.html";
+        }
     }
 }
