@@ -1,7 +1,6 @@
 package woowa.cafe.repository;
 
 import woowa.cafe.domain.Question;
-import woowa.cafe.domain.User;
 import woowa.frame.core.annotation.Component;
 
 import java.lang.reflect.Field;
@@ -29,5 +28,9 @@ public class QuestionRepository {
 
     public List<Question> findAll() {
         return database.values().stream().toList();
+    }
+
+    public Question findById(String id) {
+        return database.get(id);
     }
 }

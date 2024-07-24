@@ -31,7 +31,7 @@ public class QnaRouter {
         CreateQuestionRequest req = new CreateQuestionRequest(
                 request.getParameter("writer"),
                 request.getParameter("title"),
-                request.getParameter("content")
+                request.getParameter("contents")
         );
 
         try {
@@ -40,5 +40,18 @@ public class QnaRouter {
         } catch (RuntimeException ex) {
             return "redirect:/static/qna/form.html";
         }
+    }
+
+    @HttpMapping(method = "GET", urlTemplate = "/question/{id}")
+    public String getQuestion(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getRequestURI().substring(10);
+        QuestionInfo question = qnaService.getQuestion(id);
+
+        if (question == null) {
+            return "redirect:/static/qna/form.html";
+        }
+
+        request.setAttribute("question", question);
+        return "/template/qna/detail.jsp";
     }
 }

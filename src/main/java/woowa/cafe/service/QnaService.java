@@ -33,4 +33,17 @@ public class QnaService {
                 ))
                 .toList();
     }
+
+    public QuestionInfo getQuestion(String id) {
+        Question question = questionRepository.findById(id);
+
+        if(question == null) return null;
+
+        return new QuestionInfo(
+                question.getId(),
+                question.getAuthorName(),
+                question.getTitle(),
+                question.getContent()
+        );
+    }
 }
