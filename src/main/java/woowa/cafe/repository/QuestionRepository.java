@@ -1,9 +1,11 @@
 package woowa.cafe.repository;
 
 import woowa.cafe.domain.Question;
+import woowa.cafe.domain.User;
 import woowa.frame.core.annotation.Component;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,5 +25,9 @@ public class QuestionRepository {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<Question> findAll() {
+        return database.values().stream().toList();
     }
 }
