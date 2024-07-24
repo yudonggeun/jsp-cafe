@@ -98,7 +98,7 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="./qna/show.html"><%=questionInfo.title()%></a>
+                                <a href="/question/<%=questionInfo.id()%>"><%=questionInfo.title()%></a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
