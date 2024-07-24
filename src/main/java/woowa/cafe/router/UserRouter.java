@@ -35,7 +35,7 @@ public class UserRouter {
                 request.getParameter("email")
         );
         userService.createUser(createUserRequest);
-        return "redirect:/static/user/list.html";
+        return "redirect:/users";
     }
 
     @HttpMapping(method = "GET", urlTemplate = "/user/{userId}")
