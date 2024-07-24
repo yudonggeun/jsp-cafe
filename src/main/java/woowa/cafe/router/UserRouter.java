@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import woowa.cafe.dto.UserInfo;
 import woowa.cafe.dto.request.CreateUserRequest;
+import woowa.cafe.dto.request.UpdateUserRequest;
 import woowa.cafe.service.UserService;
 import woowa.frame.web.annotation.Router;
 import woowa.frame.web.annotation.HttpMapping;
@@ -48,6 +49,28 @@ public class UserRouter {
         } else {
             request.setAttribute("user", user);
             return "/template/user/profile.jsp";
+        }
+    }
+
+    @HttpMapping(method = "GET", urlTemplate = "/user/{userId}/form")
+    public String editProfilePage(HttpServletRequest request, HttpServletResponse response) {
+        return "/template/user/editProfile.jsp";
+    }
+
+    @HttpMapping(method = "POST", urlTemplate = "/user/{userId}/edit")
+    public String editProfile(HttpServletRequest request, HttpServletResponse response) {
+        String userId = request.getRequestURI().substring(6, request.getRequestURI().length() - 5);
+        var req = new UpdateUserRequest(
+                userId,
+                request.getParameter("password"),
+                request.getParameter("name"),
+                request.getParameter("email")
+        );
+        try {
+            userService.updateUser(req);
+            return "redirect:/user/" + userId;
+        } catch (RuntimeException ex){
+            return "/template/user/editProfile.jsp";
         }
     }
 }
