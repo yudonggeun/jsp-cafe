@@ -77,7 +77,8 @@
                     </td>
                     <td><%= user.email() %>
                     </td>
-                    <td><a href="/user/<%=user.id()%>" class="btn btn-success" role="button">수정</a></td>
+                    <td><a href="/user/<%=user.id()%>" class="btn btn-success" role="button">상세 조회</a></td>
+                    <td><a href="/user/<%=user.id()%>/form" class="btn btn-success" role="button">수정</a></td>
                 </tr>
                 <% } %>
                 </tbody>
