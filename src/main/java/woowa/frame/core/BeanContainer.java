@@ -52,7 +52,9 @@ public class BeanContainer {
      */
     public void createBeans() {
         for (Class<?> clazz : beans.keySet()) {
-            createBean(clazz);
+            if(beans.get(clazz) == null){
+                createBean(clazz);
+            }
         }
     }
 
@@ -111,7 +113,7 @@ public class BeanContainer {
                 throw new RuntimeException("빈으로 등록할 클래스의 생성자를 호출할 수 없습니다.");
             }
         } else {
-            logger.error("빈으로 등록할 클래스의 생성자는 하나이어야 합니다.");
+            logger.error("빈으로 등록할 클래스의 생성자는 하나이어야 합니다. class={}", clazz.getName());
             throw new RuntimeException("빈으로 등록할 클래스의 생성자는 하나이어야 합니다.");
         }
     }
@@ -125,7 +127,12 @@ public class BeanContainer {
     public <T> List<T> getBeans(Class<T> clazz) {
         List<T> beans = new ArrayList<>();
         for (Class<?> type : this.beans.keySet()) {
-            if (clazz.isAssignableFrom(type)) {
+            if (!clazz.isAssignableFrom(type)) {
+                continue;
+            }
+            if (this.beans.get(type) == null) {
+                beans.add((T) createBean(type));
+            } else {
                 beans.add((T) this.beans.get(type));
             }
         }
