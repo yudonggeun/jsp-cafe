@@ -42,8 +42,8 @@ public class UserService {
     public void updateUser(UpdateUserRequest req) {
         User user = userRepository.findById(req.userId());
 
-        if(req.password() != null) {
-            user.setPassword(req.password());
+        if(!req.password().equals(user.getPassword())) {
+            throw new RuntimeException("Password is not correct");
         }
 
         if(req.name() != null) {
