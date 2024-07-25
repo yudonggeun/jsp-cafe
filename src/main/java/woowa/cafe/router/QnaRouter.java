@@ -26,6 +26,11 @@ public class QnaRouter {
         return "/template/qna/list.jsp";
     }
 
+    @HttpMapping(method = "GET", urlTemplate = "/question")
+    public String showQuestionForm(HttpServletRequest request, HttpServletResponse response) {
+        return "/template/qna/form.jsp";
+    }
+
     @HttpMapping(method = "POST", urlTemplate = "/question")
     public String createQuestion(HttpServletRequest request, HttpServletResponse response) {
         CreateQuestionRequest req = new CreateQuestionRequest(
@@ -38,7 +43,7 @@ public class QnaRouter {
             qnaService.createQna(req);
             return "redirect:/";
         } catch (RuntimeException ex) {
-            return "redirect:/static/qna/form.html";
+            return "redirect:/question";
         }
     }
 
@@ -48,7 +53,7 @@ public class QnaRouter {
         QuestionInfo question = qnaService.getQuestion(id);
 
         if (question == null) {
-            return "redirect:/static/qna/form.html";
+            return "redirect:/question";
         }
 
         request.setAttribute("question", question);

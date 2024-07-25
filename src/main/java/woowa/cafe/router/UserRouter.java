@@ -52,6 +52,11 @@ public class UserRouter {
         }
     }
 
+    @HttpMapping(method = "GET", urlTemplate = "/user")
+    public String getUserFormPage(HttpServletRequest request, HttpServletResponse response) {
+        return "/template/user/form.jsp";
+    }
+
     @HttpMapping(method = "GET", urlTemplate = "/user/{userId}/form")
     public String editProfilePage(HttpServletRequest request, HttpServletResponse response) {
         return "/template/user/editProfile.jsp";
