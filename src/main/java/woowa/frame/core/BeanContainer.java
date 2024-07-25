@@ -85,7 +85,7 @@ public class BeanContainer {
         }
 
         if (!beans.containsKey(clazz)) {
-            throw new RuntimeException("빈으로 등록되진 않은 클래스입니다.");
+            throw new RuntimeException("빈으로 등록되진 않은 클래스입니다. class=" + clazz.getName());
         }
 
         return createBean(clazz);
@@ -110,7 +110,7 @@ public class BeanContainer {
                 return bean;
             } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
                 logger.error("빈으로 등록할 클래스의 생성자를 호출할 수 없습니다.");
-                throw new RuntimeException("빈으로 등록할 클래스의 생성자를 호출할 수 없습니다.");
+                throw new RuntimeException("빈으로 등록할 클래스의 생성자를 호출할 수 없습니다. class=" + clazz.getName());
             }
         } else {
             logger.error("빈으로 등록할 클래스의 생성자는 하나이어야 합니다. class={}", clazz.getName());
