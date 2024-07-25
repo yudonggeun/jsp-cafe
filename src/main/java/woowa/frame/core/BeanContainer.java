@@ -154,4 +154,8 @@ public class BeanContainer {
         }
         return beans;
     }
+
+    public void clear(){
+        beans.clear();
+    }
 }
