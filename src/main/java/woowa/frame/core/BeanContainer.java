@@ -20,7 +20,8 @@ public class BeanContainer {
         return INSTANCE;
     }
 
-    private BeanContainer() { }
+    private BeanContainer() {
+    }
 
     private final Logger logger = LoggerFactory.getLogger(BeanContainer.class);
     private final Map<Class<?>, Object> beans = new HashMap<>();
@@ -50,7 +51,7 @@ public class BeanContainer {
      */
     public void createBeans() {
         for (Class<?> clazz : beans.keySet()) {
-            getBean(clazz);
+            createBean(clazz);
         }
     }
 
@@ -73,6 +74,10 @@ public class BeanContainer {
             throw new RuntimeException("빈으로 등록되진 않은 클래스입니다.");
         }
 
+        return createBean(clazz);
+    }
+
+    private <T> T createBean(Class<T> clazz) {
         Constructor<?>[] constructors = clazz.getConstructors();
         if (constructors.length == 1) {
 
@@ -86,7 +91,7 @@ public class BeanContainer {
             }
 
             try {
-                bean = constructor.newInstance(parameters.toArray());
+                T bean = constructor.newInstance(parameters.toArray());
                 beans.put(clazz, bean);
                 return bean;
             } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
