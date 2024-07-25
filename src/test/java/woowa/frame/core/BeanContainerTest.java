@@ -60,7 +60,7 @@ class BeanContainerTest {
 
         // then
         assertThatThrownBy(() -> container.getBean(NeedBaseConstructorClass.class))
-                .hasMessage("빈으로 등록되진 않은 클래스입니다.");
+                .hasMessage("빈으로 등록되진 않은 클래스입니다. class=" + BaseConstructorClass.class.getName());
     }
 
     @DisplayName("인터페이스를 의존 하는 객체는 그 구현체를 주입하여 빈을 생성할 수 있다.")
