@@ -2,6 +2,7 @@ package woowa.frame.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import woowa.frame.core.annotation.Primary;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -68,6 +69,17 @@ public class BeanContainer {
 
         if (bean != null) {
             return bean;
+        }
+
+        List<T> childrenBeans = getBeans(clazz);
+        for (T child : childrenBeans) {
+            if (child.getClass().isAnnotationPresent(Primary.class)) {
+                return child;
+            }
+        }
+
+        if (!childrenBeans.isEmpty()) {
+            return childrenBeans.get(0);
         }
 
         if (!beans.containsKey(clazz)) {
