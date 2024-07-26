@@ -3,6 +3,7 @@ package woowa.cafe.router;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import woowa.cafe.dto.UserInfo;
 import woowa.cafe.service.LoginService;
 import woowa.frame.web.annotation.HttpMapping;
 import woowa.frame.web.annotation.Router;
@@ -26,8 +27,10 @@ public class LoginRouter {
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
 
-        if (loginService.login(userId, password)) {
+        UserInfo userInfo = loginService.login(userId, password);
+        if (userInfo != null) {
             HttpSession session = request.getSession(true);
+            session.setAttribute("userInfo", userInfo);
             session.setAttribute("userId", userId);
             return "redirect:/";
         } else {

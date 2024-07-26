@@ -1,6 +1,7 @@
 package woowa.cafe.service;
 
 import woowa.cafe.domain.User;
+import woowa.cafe.dto.UserInfo;
 import woowa.cafe.repository.UserRepository;
 import woowa.frame.core.annotation.Component;
 
@@ -13,8 +14,8 @@ public class LoginService {
         this.userRepository = userRepository;
     }
 
-    public boolean login(String userId, String password) {
+    public UserInfo login(String userId, String password) {
         User user = userRepository.findByUserIdAndPassword(userId, password);
-        return user != null;
+        return user == null ? null : new UserInfo(user.getId(), user.getUserId(), user.getName(), user.getEmail());
     }
 }
