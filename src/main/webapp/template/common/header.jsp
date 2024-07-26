@@ -60,7 +60,7 @@
                 <li><a href="/user" role="button">회원가입</a></li>
                 <% } else { %>
                 <li><a href="/logout" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+                <li><a href="/user/form" role="button">개인정보수정</a></li>
                 <% } %>
             </ul>
         </div>
