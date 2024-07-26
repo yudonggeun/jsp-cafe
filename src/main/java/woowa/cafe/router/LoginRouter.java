@@ -26,12 +26,21 @@ public class LoginRouter {
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
 
-        if(loginService.login(userId, password)){
+        if (loginService.login(userId, password)) {
             HttpSession session = request.getSession(true);
             session.setAttribute("userId", userId);
             return "redirect:/";
         } else {
             return "redirect:/login";
         }
+    }
+
+    @HttpMapping(method = "GET", urlTemplate = "/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/";
     }
 }
