@@ -33,8 +33,8 @@ public class JdbcQuestionRepository implements QuestionRepository {
                        "id BIGINT AUTO_INCREMENT PRIMARY KEY, " +
                        "authorName VARCHAR(255), " +
                        "title VARCHAR(255), " +
-                       "content VARCHAR(255))" +
-                       "userId VARCHAR(255)";
+                       "content VARCHAR(255)," +
+                       "userId VARCHAR(255))";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.execute();
