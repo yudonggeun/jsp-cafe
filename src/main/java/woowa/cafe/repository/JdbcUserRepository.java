@@ -89,6 +89,22 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    public void update(User user) {
+        String query = "UPDATE users SET userId = ?, password = ?, name = ?, email = ? WHERE id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getName());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public User findById(String id) {
         String query = "SELECT * FROM users WHERE id = ?";
         try (Connection conn = dataSource.getConnection();

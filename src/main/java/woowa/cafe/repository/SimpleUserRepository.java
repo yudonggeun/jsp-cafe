@@ -44,4 +44,9 @@ public class SimpleUserRepository implements UserRepository {
     public List<User> findAll() {
         return database.values().stream().toList();
     }
+
+    @Override
+    public void update(User user) {
+        database.put(user.getId(), user);
+    }
 }
