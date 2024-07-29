@@ -2,6 +2,7 @@ package woowa.cafe.service;
 
 import woowa.cafe.domain.Question;
 import woowa.cafe.dto.QuestionInfo;
+import woowa.cafe.dto.UpdateQuestionRequest;
 import woowa.cafe.dto.request.CreateQuestionRequest;
 import woowa.cafe.repository.QuestionRepository;
 import woowa.frame.core.annotation.Component;
@@ -38,6 +39,23 @@ public class QnaService {
         Question question = questionRepository.findById(id);
 
         if(question == null) return null;
+
+        return new QuestionInfo(
+                question.getId(),
+                question.getAuthorName(),
+                question.getTitle(),
+                question.getContent()
+        );
+    }
+
+    public QuestionInfo updateQuestion(UpdateQuestionRequest updateRequest) {
+        Question question = questionRepository.findById(updateRequest.id());
+
+        if(question == null) return null;
+
+        question.setTitle(updateRequest.title());
+        question.setContent(updateRequest.content());
+        questionRepository.update(question);
 
         return new QuestionInfo(
                 question.getId(),

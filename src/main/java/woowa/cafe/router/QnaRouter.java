@@ -3,6 +3,7 @@ package woowa.cafe.router;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import woowa.cafe.dto.QuestionInfo;
+import woowa.cafe.dto.UpdateQuestionRequest;
 import woowa.cafe.dto.request.CreateQuestionRequest;
 import woowa.cafe.service.QnaService;
 import woowa.frame.web.annotation.HttpMapping;
@@ -59,6 +60,31 @@ public class QnaRouter {
         } catch (RuntimeException ex) {
             return "redirect:/question";
         }
+    }
+
+    @HttpMapping(method = "PATCH", urlTemplate = "/question/{id}")
+    public String updateQuestion(HttpServletRequest request, HttpServletResponse response) {
+
+        String id = request.getRequestURI().substring(10);
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String userId = (String) request.getSession().getAttribute("userId");
+
+        UpdateQuestionRequest updateRequest = new UpdateQuestionRequest(
+                id,
+                userId,
+                title,
+                content
+        );
+
+        QuestionInfo question = qnaService.updateQuestion(updateRequest);
+
+        if (question == null) {
+            return "redirect:/question";
+        }
+
+        request.setAttribute("question", question);
+        return "/template/qna/detail.jsp";
     }
 
     @HttpMapping(method = "GET", urlTemplate = "/question/{id}")

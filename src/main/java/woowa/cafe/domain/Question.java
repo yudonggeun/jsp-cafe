@@ -33,4 +33,13 @@ public class Question {
     public String getUserId() {
         return userId;
     }
+
+    // setter
+    public void setTitle(String title) {
+        if (title != null) this.title = title;
+    }
+
+    public void setContent(String content) {
+        if (content != null) this.content = content;
+    }
 }
