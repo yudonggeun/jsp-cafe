@@ -42,6 +42,7 @@ public class AuthFilter implements Filter {
         // question
         QUESTION_CREATE("POST", "/question"),
         QUESTION_DETAIL_PAGE("GET", "/question/"),
+        QUESTION_UPDATE("PATCH", "/question/"),
         ;
         private final String method;
         private final String url;
