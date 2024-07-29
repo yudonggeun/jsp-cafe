@@ -24,7 +24,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
     private Logger logger = LoggerFactory.getLogger(JdbcQuestionRepository.class);
 
     public JdbcQuestionRepository(JdbcConfig config) {
-        this.dataSource = config.dataSource;
+        this.dataSource = config.getDataSource();
         createTable();
     }
 

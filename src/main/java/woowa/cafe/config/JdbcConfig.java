@@ -9,9 +9,12 @@ import javax.sql.DataSource;
 @Component
 public class JdbcConfig {
 
-    public final DataSource dataSource;
+    private DataSource dataSource;
 
     public JdbcConfig() {
+    }
+
+    public void init() {
         String jdbcUrl = "jdbc:mysql://localhost:3306/woowa";
         String user = "user1";
         String password = "test1234@";
@@ -40,6 +43,9 @@ public class JdbcConfig {
     }
 
     public DataSource getDataSource() {
+        if (dataSource == null) {
+            init();
+        }
         return dataSource;
     }
 }
