@@ -35,17 +35,22 @@ public class QnaRouter {
      * 질문(게시글)을 생성하는 요청을 처리합니다.
      * 게시글 작성은 로그인한 유저만이 실행이 가능합니다. 로그인 여부는 {@link woowa.cafe.filter.AuthFilter} 필터에서 확인합니다.
      * <li> POST /question </li>
-     * @param request HttpServletRequest
+     *
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
-     * @see woowa.cafe.filter.AuthFilter 로그인 여부를 확인하는 필터
      * @return 생성된 질문의 상세 페이지로 리다이렉트합니다. 질문 생성에 실패하면 질문 작성 페이지로 리다이렉트합니다.
+     * @see woowa.cafe.filter.AuthFilter 로그인 여부를 확인하는 필터
      */
     @HttpMapping(method = "POST", urlTemplate = "/question")
     public String createQuestion(HttpServletRequest request, HttpServletResponse response) {
+
+        String userId = (String) request.getSession().getAttribute("userId");
+
         CreateQuestionRequest req = new CreateQuestionRequest(
                 request.getParameter("writer"),
                 request.getParameter("title"),
-                request.getParameter("contents")
+                request.getParameter("contents"),
+                userId
         );
 
         try {

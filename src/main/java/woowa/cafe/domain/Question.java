@@ -6,8 +6,9 @@ public class Question {
     private String authorName;
     private String title;
     private String content;
+    private String userId;
 
-    public Question(String authorName, String title, String content) {
+    public Question(String authorName, String title, String content, String userId) {
         this.authorName = authorName;
         this.title = title;
         this.content = content;
@@ -27,5 +28,9 @@ public class Question {
 
     public String getContent() {
         return content;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 }
