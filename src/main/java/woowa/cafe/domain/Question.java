@@ -12,6 +12,7 @@ public class Question {
         this.authorName = authorName;
         this.title = title;
         this.content = content;
+        this.userId = userId;
     }
 
     public String getId() {

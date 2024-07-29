@@ -34,7 +34,8 @@ public class JdbcQuestionRepository implements QuestionRepository {
                        "authorName VARCHAR(255), " +
                        "title VARCHAR(255), " +
                        "content VARCHAR(255)," +
-                       "userId VARCHAR(255))";
+                       "userId VARCHAR(255)" +
+                       ")";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.execute();
