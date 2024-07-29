@@ -32,4 +32,9 @@ public class SimpleQuestionRepository implements QuestionRepository {
     public Question findById(String id) {
         return database.get(id);
     }
+
+    @Override
+    public void update(Question question) {
+        database.put(question.getId(), question);
+    }
 }

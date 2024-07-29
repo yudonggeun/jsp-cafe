@@ -11,4 +11,6 @@ public interface QuestionRepository {
     List<Question> findAll();
 
     Question findById(String id);
+
+    void update(Question question);
 }

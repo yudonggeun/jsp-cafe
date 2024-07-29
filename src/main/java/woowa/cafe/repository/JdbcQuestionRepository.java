@@ -116,4 +116,27 @@ public class JdbcQuestionRepository implements QuestionRepository {
         }
         return null;
     }
+
+    @Override
+    public void update(Question question) {
+
+        String query = "UPDATE questions SET " +
+                       "authorName = ?, " +
+                       "title = ?, " +
+                       "content = ?, " +
+                       "userId = ? " +
+                       "WHERE id = ?";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, question.getAuthorName());
+            ps.setString(2, question.getTitle());
+            ps.setString(3, question.getContent());
+            ps.setString(4, question.getUserId());
+            ps.setString(5, question.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
