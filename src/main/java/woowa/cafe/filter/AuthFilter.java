@@ -41,6 +41,7 @@ public class AuthFilter implements Filter {
     private enum BlockAPI {
         // question
         QUESTION_CREATE("POST", "/question"),
+        QUESTION_DETAIL_PAGE("GET", "/question/"),
         ;
         private final String method;
         private final String url;
