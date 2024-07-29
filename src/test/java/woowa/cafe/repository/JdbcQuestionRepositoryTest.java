@@ -1,5 +1,6 @@
 package woowa.cafe.repository;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MySQLContainer;
@@ -12,6 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
+@DisplayName("질문(게시판) 쿼리 테스트")
 class JdbcQuestionRepositoryTest {
 
     @Container
@@ -26,6 +28,7 @@ class JdbcQuestionRepositoryTest {
 
     @Test
     @Order(1)
+    @DisplayName("질문(게시판)을 생성할 수 있다.")
     public void create_question() {
         // given
         Question question = new Question(
