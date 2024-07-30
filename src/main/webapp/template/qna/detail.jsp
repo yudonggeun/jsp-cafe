@@ -113,17 +113,17 @@
                                     <ul class="article-util-list">
                                         <li>
                                             <a class="link-modify-article"
-                                               href="/questions/<%=question.id()%>/answers/<%=reply.id()%>">수정</a>
+                                               href="/question/<%=question.id()%>/reply/<%=reply.id()%>">수정</a>
                                         </li>
                                         <li>
                                             <input type="hidden" name="_method" value="DELETE">
                                             <button type="submit" class="delete-answer-button"
-                                                    onclick="delete_question()">삭제
+                                                    onclick="deleteReply()">삭제
                                             </button>
                                         </li>
                                         <script>
                                             function deleteReply() {
-                                                let url = "/questions/<%=question.id()%>/answers/<%=reply.id()%>";
+                                                let url = "/question/<%=question.id()%>/reply/<%=reply.id()%>";
 
                                                 fetch(url, {
                                                     method: 'DELETE'
