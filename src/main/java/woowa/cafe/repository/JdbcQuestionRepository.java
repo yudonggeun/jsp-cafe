@@ -66,7 +66,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
     @Override
     public List<Question> findAll() {
         List<Question> questions = new ArrayList<>();
-        String query = "SELECT * FROM questions";
+        String query = "SELECT * FROM questions WHERE status != 'DELETED'";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
@@ -94,7 +94,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
 
     @Override
     public Question findById(String id) {
-        String query = "SELECT * FROM questions WHERE id = ?";
+        String query = "SELECT * FROM questions WHERE id = ? WHERE status != 'DELETED'";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, id);
