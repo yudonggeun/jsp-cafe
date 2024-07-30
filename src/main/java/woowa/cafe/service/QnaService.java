@@ -5,6 +5,7 @@ import woowa.cafe.dto.QuestionInfo;
 import woowa.cafe.dto.UpdateQuestionRequest;
 import woowa.cafe.dto.request.CreateQuestionRequest;
 import woowa.cafe.repository.QuestionRepository;
+import woowa.cafe.repository.ReplyRepository;
 import woowa.frame.core.annotation.Component;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.List;
 public class QnaService {
 
     private final QuestionRepository questionRepository;
+    private final ReplyRepository replyRepository;
 
-    public QnaService(QuestionRepository questionRepository) {
+    public QnaService(QuestionRepository questionRepository, ReplyRepository replyRepository) {
         this.questionRepository = questionRepository;
+        this.replyRepository = replyRepository;
     }
 
     public void createQna(CreateQuestionRequest request) {
@@ -72,7 +75,12 @@ public class QnaService {
         if (question == null) return false;
         if (!question.getUserId().equals(userId)) return false;
 
-        questionRepository.deleteById(questionId);
-        return true;
+        if (replyRepository.existsByQuestionIdAndNotUserId(questionId, userId)) {
+            return false;
+        } else {
+            questionRepository.deleteById(questionId);
+            replyRepository.deleteByQuestionId(questionId);
+            return true;
+        }
     }
 }

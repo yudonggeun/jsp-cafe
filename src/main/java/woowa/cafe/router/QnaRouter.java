@@ -64,7 +64,7 @@ public class QnaRouter {
                 userInfo.name(),
                 request.getParameter("title"),
                 request.getParameter("contents"),
-                userInfo.userId()
+                userInfo.id()
         );
 
         try {
@@ -106,9 +106,9 @@ public class QnaRouter {
     @HttpMapping(method = "DELETE", urlTemplate = "/question/{id}")
     public Integer deleteQuestion(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getRequestURI().substring(10);
-        String userId = (String) request.getSession().getAttribute("userId");
+        UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
 
-        if (!qnaService.deleteQuestion(id, userId)) {
+        if (!qnaService.deleteQuestion(id, userInfo.id())) {
             return HttpServletResponse.SC_BAD_REQUEST;
         }
 
