@@ -37,4 +37,9 @@ public class SimpleQuestionRepository implements QuestionRepository {
     public void update(Question question) {
         database.put(question.getId(), question);
     }
+
+    @Override
+    public void deleteById(String id) {
+        database.remove(id);
+    }
 }

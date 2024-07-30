@@ -140,4 +140,16 @@ public class JdbcQuestionRepository implements QuestionRepository {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void deleteById(String id) {
+        String query = "DELETE FROM questions WHERE id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -13,4 +13,6 @@ public interface QuestionRepository {
     Question findById(String id);
 
     void update(Question question);
+
+    void deleteById(String id);
 }
