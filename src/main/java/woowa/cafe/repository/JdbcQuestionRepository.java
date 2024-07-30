@@ -94,7 +94,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
 
     @Override
     public Question findById(String id) {
-        String query = "SELECT * FROM questions WHERE id = ? WHERE status != 'DELETED'";
+        String query = "SELECT * FROM questions WHERE id = ? and status != 'DELETED'";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, id);
