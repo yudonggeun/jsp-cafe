@@ -8,16 +8,24 @@ import woowa.cafe.dto.request.CreateQuestionRequest;
 import woowa.cafe.service.QnaService;
 import woowa.frame.web.annotation.HttpMapping;
 import woowa.frame.web.annotation.Router;
+import woowa.frame.web.parser.FormParser;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
+import java.util.Map;
 
 @Router
 public class QnaRouter {
 
     private final QnaService qnaService;
+    private final FormParser parser;
 
-    public QnaRouter(QnaService qnaService) {
+    public QnaRouter(QnaService qnaService, FormParser parser) {
         this.qnaService = qnaService;
+        this.parser = parser;
     }
 
     @HttpMapping(method = "GET", urlTemplate = "/")
@@ -63,11 +71,14 @@ public class QnaRouter {
     }
 
     @HttpMapping(method = "PATCH", urlTemplate = "/question/{id}")
-    public String updateQuestion(HttpServletRequest request, HttpServletResponse response) {
+    public Integer updateQuestion(HttpServletRequest request, HttpServletResponse response) {
+
+        String body = readBody(request);
+        Map<String, String> params = parser.parse(body);
 
         String id = request.getRequestURI().substring(10);
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
+        String title = params.get("title");
+        String content = params.get("contents");
         String userId = (String) request.getSession().getAttribute("userId");
 
         UpdateQuestionRequest updateRequest = new UpdateQuestionRequest(
@@ -80,11 +91,11 @@ public class QnaRouter {
         QuestionInfo question = qnaService.updateQuestion(updateRequest);
 
         if (question == null) {
-            return "redirect:/question";
+            return HttpServletResponse.SC_BAD_REQUEST;
         }
 
         request.setAttribute("question", question);
-        return "/template/qna/detail.jsp";
+        return HttpServletResponse.SC_OK;
     }
 
     @HttpMapping(method = "GET", urlTemplate = "/question/{id}")
@@ -98,5 +109,26 @@ public class QnaRouter {
 
         request.setAttribute("question", question);
         return "/template/qna/detail.jsp";
+    }
+
+    @HttpMapping(method = "GET", urlTemplate = "/question/{id}/form")
+    public String getQuestionEditForm(HttpServletRequest request, HttpServletResponse response) {
+        return "/template/qna/edit.jsp";
+    }
+
+    private String readBody(HttpServletRequest request) {
+        String body;
+        try {
+            request.setCharacterEncoding("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        try (InputStream input = request.getInputStream()) {
+            body = URLDecoder.decode(new String(input.readAllBytes()), "UTF-8");
+            return body;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 }
