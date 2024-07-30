@@ -38,7 +38,7 @@ public class QnaService {
     public QuestionInfo getQuestion(String id) {
         Question question = questionRepository.findById(id);
 
-        if(question == null) return null;
+        if (question == null) return null;
 
         return new QuestionInfo(
                 question.getId(),
@@ -51,8 +51,8 @@ public class QnaService {
     public QuestionInfo updateQuestion(UpdateQuestionRequest updateRequest) {
         Question question = questionRepository.findById(updateRequest.id());
 
-        if(question == null) return null;
-        if(!question.getUserId().equals(updateRequest.userId())) return null;
+        if (question == null) return null;
+        if (!question.getUserId().equals(updateRequest.userId())) return null;
 
         question.setTitle(updateRequest.title());
         question.setContent(updateRequest.content());
@@ -64,5 +64,15 @@ public class QnaService {
                 question.getTitle(),
                 question.getContent()
         );
+    }
+
+    public boolean deleteQuestion(String questionId, String userId) {
+        Question question = questionRepository.findById(questionId);
+
+        if (question == null) return false;
+        if (!question.getUserId().equals(userId)) return false;
+
+        questionRepository.deleteById(questionId);
+        return true;
     }
 }

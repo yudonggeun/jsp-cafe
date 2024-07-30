@@ -98,6 +98,18 @@ public class QnaRouter {
         return HttpServletResponse.SC_OK;
     }
 
+    @HttpMapping(method = "DELETE", urlTemplate = "/question/{id}")
+    public Integer deleteQuestion(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getRequestURI().substring(10);
+        String userId = (String) request.getSession().getAttribute("userId");
+
+        if (!qnaService.deleteQuestion(id, userId)) {
+            return HttpServletResponse.SC_BAD_REQUEST;
+        }
+
+        return HttpServletResponse.SC_OK;
+    }
+
     @HttpMapping(method = "GET", urlTemplate = "/question/{id}")
     public String getQuestion(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getRequestURI().substring(10);
