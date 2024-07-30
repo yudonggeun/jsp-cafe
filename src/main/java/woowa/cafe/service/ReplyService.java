@@ -2,6 +2,7 @@ package woowa.cafe.service;
 
 import woowa.cafe.domain.Reply;
 import woowa.cafe.dto.ReplyInfo;
+import woowa.cafe.dto.UserInfo;
 import woowa.cafe.repository.ReplyRepository;
 import woowa.frame.core.annotation.Component;
 
@@ -32,5 +33,19 @@ public class ReplyService {
 
     public void createReply(String questionId, String content, String userId, String authorName) {
         replyRepository.save(new Reply(content, "ACTIVE", userId, authorName, questionId));
+    }
+
+    public boolean deleteReply(UserInfo userInfo, String questionId, String replyId) {
+        Reply reply = replyRepository.findById(replyId);
+
+        if (reply == null) {
+            return true;
+        }
+
+        if (!reply.getUserId().equals(userInfo.id())) {
+            return false;
+        }
+        replyRepository.deleteById(replyId);
+        return true;
     }
 }

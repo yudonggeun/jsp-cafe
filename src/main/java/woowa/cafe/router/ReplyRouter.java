@@ -29,4 +29,18 @@ public class ReplyRouter {
         replyService.createReply(questionId, content, userInfo.id(), userInfo.name());
         return 200;
     }
+
+    @HttpMapping(method = "DELETE", urlTemplate = "/{replyId}")
+    public Integer deleteReply(HttpServletRequest request, HttpServletResponse response) {
+        String url = request.getRequestURI();
+        String questionId = url.substring(10, url.lastIndexOf("/reply"));
+        String replyId = url.substring(url.lastIndexOf("/reply/") + 7);
+        UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
+
+        if (replyService.deleteReply(userInfo, questionId, replyId)) {
+            return 200;
+        } else {
+            return 400;
+        }
+    }
 }
