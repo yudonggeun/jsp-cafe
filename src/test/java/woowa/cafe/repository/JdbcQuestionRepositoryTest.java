@@ -26,7 +26,8 @@ class JdbcQuestionRepositoryTest extends RepositoryTestContainer {
                 "authorName",
                 "title",
                 "contents",
-                "userId"
+                "userId",
+                "ACTIVE"
         );
 
         // when

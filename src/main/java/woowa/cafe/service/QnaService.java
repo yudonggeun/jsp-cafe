@@ -19,7 +19,7 @@ public class QnaService {
     }
 
     public void createQna(CreateQuestionRequest request) {
-        Question question = new Question(request.authorName(), request.title(), request.content(), request.userId());
+        Question question = new Question(request.authorName(), request.title(), request.content(), request.userId(), "ACTIVE");
         questionRepository.save(question);
     }
 
