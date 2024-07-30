@@ -109,4 +109,50 @@ class JdbcReplyRepositoryTest extends RepositoryTestContainer {
         List<Reply> replies = jdbcReplyRepository.findAll();
         assertThat(replies).isEmpty();
     }
+
+    @Test
+    @DisplayName("다른 사람이 질문글에 댓글을 달았는지 확인할 수 있다.")
+    public void existsByQuestionIdAndNotUserId() {
+        // given
+        String questionId = "questionId";
+        for (int i = 0; i < 10; i++) {
+            Reply reply = new Reply(
+                    "content" + i,
+                    "ACTIVE",
+                    "userId" + i,
+                    "authorName" + i,
+                    questionId
+            );
+            jdbcReplyRepository.save(reply);
+        }
+
+        // when
+        boolean exists = jdbcReplyRepository.existsByQuestionIdAndNotUserId(questionId, "userId");
+
+        // then
+        assertThat(exists).isTrue();
+    }
+
+    @Test
+    public void test2(){
+        // given
+        String questionId = "questionId";
+        for (int i = 0; i < 10; i++) {
+            Reply reply = new Reply(
+                    "content" + i,
+                    "ACTIVE",
+                    "userId",
+                    "authorName" + i,
+                    questionId
+            );
+            jdbcReplyRepository.save(reply);
+        }
+
+        // when
+        boolean exists = jdbcReplyRepository.existsByQuestionIdAndNotUserId(questionId, "userId");
+
+        // then
+        assertThat(exists).isFalse();
+    }
+
 }

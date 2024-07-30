@@ -164,4 +164,25 @@ public class JdbcReplyRepository implements ReplyRepository {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean existsByQuestionIdAndNotUserId(String questionId, String userId) {
+        String query = "SELECT count(*) AS counts FROM replies WHERE questionId = ? and userId != ? and status != 'DELETED'";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, questionId);
+            ps.setString(2, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt("counts");
+                    if (count > 0) {
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
