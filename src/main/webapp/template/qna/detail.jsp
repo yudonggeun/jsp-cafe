@@ -117,29 +117,30 @@
                                         </li>
                                         <li>
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="delete-answer-button"
-                                                    onclick="deleteReply()">삭제
+                                            <button type="button" class="delete-answer-button"
+                                                    onclick="deleteReply('<%=reply.id()%>')">삭제
                                             </button>
                                         </li>
-                                        <script>
-                                            function deleteReply() {
-                                                let url = "/question/<%=question.id()%>/reply/<%=reply.id()%>";
-
-                                                fetch(url, {
-                                                    method: 'DELETE'
-                                                }).then(response => {
-                                                    if (response.ok) {
-                                                        window.location.reload();
-                                                    } else {
-                                                        alert('삭제에 실패했습니다.');
-                                                    }
-                                                });
-                                            }
-                                        </script>
                                     </ul>
                                 </div>
                             </article>
                             <%}%>
+                            <script>
+                                function deleteReply(replyId) {
+                                    let url = "/question/<%=question.id()%>/reply/" + replyId;
+
+                                    console.log("delete reply url : " + url);
+                                    fetch(url, {
+                                        method: 'DELETE'
+                                    }).then(response => {
+                                        if (response.ok) {
+                                            window.location.reload();
+                                        } else {
+                                            alert('삭제에 실패했습니다.');
+                                        }
+                                    });
+                                }
+                            </script>
                             <form class="submit-write">
                                 <div class="form-group" style="padding:14px;">
                                     <textarea id="replyContent" class="form-control" placeholder="Update your status"></textarea>
