@@ -85,6 +85,35 @@ public class JdbcReplyRepository implements ReplyRepository {
     }
 
     @Override
+    public List<Reply> findAllByQuestionId(String questionId) {
+        List<Reply> replies = new ArrayList<>();
+        String query = "SELECT * FROM replies WHERE questionId = ? and status != 'DELETED'";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)
+        ) {
+            ps.setString(1, questionId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                Field idField = Reply.class.getDeclaredField("id");
+                idField.setAccessible(true);
+                Reply entity = new Reply(
+                        rs.getString("content"),
+                        rs.getString("status"),
+                        rs.getString("userId"),
+                        rs.getString("authorName"),
+                        rs.getString("questionId")
+                );
+                idField.set(entity, id);
+                replies.add(entity);
+            }
+            return replies;
+        } catch (SQLException | NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Reply findById(String id) {
         String query = "SELECT * FROM replies WHERE id = ? and status != 'DELETED'";
         try (Connection conn = dataSource.getConnection();

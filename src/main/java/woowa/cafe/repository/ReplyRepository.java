@@ -7,6 +7,7 @@ import java.util.List;
 public interface ReplyRepository {
     void save(Reply reply);
     List<Reply> findAll();
+    List<Reply> findAllByQuestionId(String questionId);
     Reply findById(String id);
     void deleteById(String id);
     void deleteByQuestionId(String questionId);
