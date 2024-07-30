@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import woowa.cafe.dto.QuestionInfo;
 import woowa.cafe.dto.UpdateQuestionRequest;
+import woowa.cafe.dto.UserInfo;
 import woowa.cafe.dto.request.CreateQuestionRequest;
 import woowa.cafe.service.QnaService;
 import woowa.frame.web.annotation.HttpMapping;
@@ -53,13 +54,13 @@ public class QnaRouter {
     @HttpMapping(method = "POST", urlTemplate = "/question")
     public String createQuestion(HttpServletRequest request, HttpServletResponse response) {
 
-        String userId = (String) request.getSession().getAttribute("userId");
+        UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
 
         CreateQuestionRequest req = new CreateQuestionRequest(
-                request.getParameter("writer"),
+                userInfo.name(),
                 request.getParameter("title"),
                 request.getParameter("contents"),
-                userId
+                userInfo.userId()
         );
 
         try {
