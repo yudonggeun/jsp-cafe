@@ -134,6 +134,7 @@ class JdbcReplyRepositoryTest extends RepositoryTestContainer {
     }
 
     @Test
+    @DisplayName("질문글에 다른 사람이 댓글을 작성하지 않았다면 false를 반환한다.")
     public void test2(){
         // given
         String questionId = "questionId";
