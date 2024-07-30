@@ -142,9 +142,33 @@
                             <%}%>
                             <form class="submit-write">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control" placeholder="Update your status"></textarea>
+                                    <textarea id="replyContent" class="form-control" placeholder="Update your status"></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="button">답변하기</button>
+                                <button class="btn btn-success pull-right" type="button" onclick="createReply()">답변하기</button>
+                                <script>
+                                    function createReply(){
+                                        let url = "/question/<%=question.id()%>/reply";
+                                        let content = document.getElementById("replyContent").value;
+
+                                        let newForm = new FormData();
+                                        newForm.append("content", content);
+                                        let data = new URLSearchParams(newForm).toString();
+
+                                        fetch(url, {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                                            },
+                                            body: data
+                                        }).then(response => {
+                                            if (response.ok) {
+                                                window.location.reload();
+                                            } else {
+                                                alert('답변에 실패했습니다.');
+                                            }
+                                        });
+                                    }
+                                </script>
                                 <div class="clearfix"/>
                             </form>
                         </div>
