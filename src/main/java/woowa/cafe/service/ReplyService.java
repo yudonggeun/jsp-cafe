@@ -1,5 +1,6 @@
 package woowa.cafe.service;
 
+import woowa.cafe.domain.Reply;
 import woowa.cafe.dto.ReplyInfo;
 import woowa.cafe.repository.ReplyRepository;
 import woowa.frame.core.annotation.Component;
@@ -27,5 +28,9 @@ public class ReplyService {
                         reply.getQuestionId()
                 ))
                 .toList();
+    }
+
+    public void createReply(String questionId, String content, String userId, String authorName) {
+        replyRepository.save(new Reply(content, "ACTIVE", userId, authorName, questionId));
     }
 }
