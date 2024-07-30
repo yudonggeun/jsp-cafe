@@ -34,4 +34,32 @@ public class Reply {
         this.authorName = authorName;
         this.questionId = questionId;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public String getQuestionId() {
+        return questionId;
+    }
 }
