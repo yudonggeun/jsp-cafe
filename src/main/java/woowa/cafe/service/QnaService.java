@@ -52,6 +52,7 @@ public class QnaService {
         Question question = questionRepository.findById(updateRequest.id());
 
         if(question == null) return null;
+        if(!question.getUserId().equals(updateRequest.userId())) return null;
 
         question.setTitle(updateRequest.title());
         question.setContent(updateRequest.content());
