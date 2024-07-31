@@ -86,10 +86,10 @@
                     <div class="qna-comment-slipp">
                         <p class="qna-comment-count"><strong><%=replies.size()%>
                         </strong>개의 의견</p>
-                        <div class="qna-comment-slipp-articles">
+                        <div id="reply-box" class="qna-comment-slipp-articles">
 
                             <% for (ReplyInfo reply : replies) { %>
-                            <article class="article" id="answer-1405">
+                            <article id="reply-<%=reply.id()%>" class="article">
                                 <div class="article-header">
                                     <div class="article-header-thumb">
                                         <img src="https://graph.facebook.com/v2.3/1324855987/picture"
