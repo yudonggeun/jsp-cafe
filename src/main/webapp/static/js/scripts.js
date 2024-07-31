@@ -7,3 +7,21 @@ String.prototype.format = function() {
         ;
   });
 };
+
+function deleteElementById(id) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.remove();
+  } else {
+    console.log(`Element with id ${id} not found.`);
+  }
+}
+
+function addElementById(id, htmlString) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.insertAdjacentHTML('beforeend', htmlString);
+  } else {
+    console.log(`Element with id ${id} not found.`);
+  }
+}
