@@ -69,3 +69,17 @@ function replyHtml(replyInfo) {
 
     return replyHtml
 }
+
+function incrementReplyCount(count) {
+    const element = document.getElementById('reply-count');
+    if (element) {
+        let currentCount = parseInt(element.textContent, 10);
+        if (!isNaN(currentCount)) {
+            element.textContent = currentCount + count;
+        } else {
+            console.log('Current count is not a number.');
+        }
+    } else {
+        console.log('Element with id reply-count not found.');
+    }
+}

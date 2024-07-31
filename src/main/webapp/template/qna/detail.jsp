@@ -84,7 +84,7 @@
                 %>
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        <p class="qna-comment-count"><strong><%=replies.size()%>
+                        <p class="qna-comment-count"><strong id="reply-count"><%=replies.size()%>
                         </strong>개의 의견</p>
                         <div class="qna-comment-slipp-articles">
                             <div id="reply-box">
@@ -118,7 +118,10 @@
                                             <li>
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="button" class="delete-answer-button"
-                                                        onclick="deleteReply('<%=reply.id()%>')">삭제
+                                                        onclick="{
+                                                                incrementReplyCount(-1);
+                                                                deleteReply('<%=reply.id()%>');
+                                                                }">삭제
                                                 </button>
                                             </li>
                                         </ul>
@@ -170,6 +173,7 @@
                                             if (response.ok) {
                                                 response.json().then(data => {
                                                     const replyInfo = data.data;
+                                                    incrementReplyCount(1);
                                                     addElementById('reply-box', replyHtml(replyInfo));
                                                 })
                                             } else {
