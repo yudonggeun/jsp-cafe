@@ -36,7 +36,7 @@ public class ReplyRouter {
                 "data", Map.of(
                         "id", replyInfo.id() + "",
                         "content", replyInfo.content(),
-                        "createdDate", replyInfo.createdDate().toString(),
+                        "createdDate", replyInfo.createdDate().toLocalDate().toString(),
                         "status", replyInfo.status(),
                         "userId", replyInfo.userId(),
                         "authorName", replyInfo.authorName(),
