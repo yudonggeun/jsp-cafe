@@ -9,8 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import woowa.frame.core.BeanContainer;
 import woowa.frame.core.annotation.Component;
+import woowa.frame.core.mapper.JsonMapper;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -19,6 +22,7 @@ public class DispatcherServlet extends HttpServlet {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private BeanContainer beanContainer = BeanContainer.getInstance();
     private RouteTable table;
+    private JsonMapper jsonMapper = new JsonMapper();
 
     @Override
     public void init() {
@@ -32,6 +36,11 @@ public class DispatcherServlet extends HttpServlet {
 
         if (routeTableRow.isPresent()) {
             Object result = routeTableRow.get().handle(request, response);
+
+            if (result == null) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
 
             if (result instanceof String) {
                 String stringResult = (String) result;
@@ -50,6 +59,14 @@ public class DispatcherServlet extends HttpServlet {
                 return;
             }
 
+            if (result instanceof Map<?, ?>) {
+                String json = jsonMapper.mapToJson((Map<?, ?>) result);
+                response.setContentType("application/json");
+                PrintWriter writer = response.getWriter();
+                writer.print(json);
+                writer.close();
+            }
+
             forward(request, response, "/error/404.html");
         } else {
             forward(request, response, "/error/404.html");
@@ -63,9 +80,5 @@ public class DispatcherServlet extends HttpServlet {
         } catch (ServletException | IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void destroy() {
     }
 }
