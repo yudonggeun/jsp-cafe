@@ -134,7 +134,9 @@
                                         method: 'DELETE'
                                     }).then(response => {
                                         if (response.ok) {
-                                            window.location.reload();
+                                            response.json().then(data => {
+                                                deleteElementById("reply-" + data.data.replyId);
+                                            })
                                         } else {
                                             alert('삭제에 실패했습니다.');
                                         }
