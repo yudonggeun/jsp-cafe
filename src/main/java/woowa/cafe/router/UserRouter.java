@@ -46,7 +46,7 @@ public class UserRouter {
         UserInfo user = userService.getProfile(userId);
 
         if (user == null) {
-            return "redirect:/error/404.html";
+            return "redirect:/template/error/404.jsp";
         } else {
             request.setAttribute("user", user);
             return "/template/user/profile.jsp";

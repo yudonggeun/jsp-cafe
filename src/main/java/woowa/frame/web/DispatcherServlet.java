@@ -67,9 +67,9 @@ public class DispatcherServlet extends HttpServlet {
                 writer.close();
             }
 
-            forward(request, response, "/error/404.html");
+            forward(request, response, "/template/error/404.jsp");
         } else {
-            forward(request, response, "/error/404.html");
+            forward(request, response, "/template/error/404.jsp");
         }
     }
 
