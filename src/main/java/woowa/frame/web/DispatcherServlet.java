@@ -1,5 +1,6 @@
 package woowa.frame.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -9,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import woowa.frame.core.BeanContainer;
 import woowa.frame.core.annotation.Component;
-import woowa.frame.core.mapper.JsonMapper;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,7 +22,7 @@ public class DispatcherServlet extends HttpServlet {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private BeanContainer beanContainer = BeanContainer.getInstance();
     private RouteTable table;
-    private JsonMapper jsonMapper = new JsonMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void init() {
@@ -60,7 +60,7 @@ public class DispatcherServlet extends HttpServlet {
             }
 
             if (result instanceof Map<?, ?>) {
-                String json = jsonMapper.mapToJson((Map<?, ?>) result);
+                String json = objectMapper.writeValueAsString(result);
                 response.setContentType("application/json");
                 PrintWriter writer = response.getWriter();
                 writer.print(json);
