@@ -1,6 +1,7 @@
 package woowa.cafe.service;
 
 import woowa.cafe.domain.Question;
+import woowa.cafe.dto.Pageable;
 import woowa.cafe.dto.QuestionInfo;
 import woowa.cafe.dto.UpdateQuestionRequest;
 import woowa.cafe.dto.request.CreateQuestionRequest;
@@ -27,8 +28,8 @@ public class QnaService {
         questionRepository.save(question);
     }
 
-    public List<QuestionInfo> getQuestions() {
-        List<Question> questions = questionRepository.findAll(null);
+    public List<QuestionInfo> getQuestions(Pageable pageable) {
+        List<Question> questions = questionRepository.findAll(pageable);
         return questions.stream()
                 .map(question -> new QuestionInfo(
                         question.getId(),

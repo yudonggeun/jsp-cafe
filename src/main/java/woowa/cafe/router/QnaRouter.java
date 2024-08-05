@@ -2,10 +2,7 @@ package woowa.cafe.router;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import woowa.cafe.dto.QuestionInfo;
-import woowa.cafe.dto.ReplyInfo;
-import woowa.cafe.dto.UpdateQuestionRequest;
-import woowa.cafe.dto.UserInfo;
+import woowa.cafe.dto.*;
 import woowa.cafe.dto.request.CreateQuestionRequest;
 import woowa.cafe.service.QnaService;
 import woowa.cafe.service.ReplyService;
@@ -35,7 +32,10 @@ public class QnaRouter {
 
     @HttpMapping(method = "GET", urlTemplate = "/")
     public String showQuestions(HttpServletRequest request, HttpServletResponse response) {
-        List<QuestionInfo> questions = qnaService.getQuestions();
+
+        Pageable pageable = getPageable(request);
+
+        List<QuestionInfo> questions = qnaService.getQuestions(pageable);
         request.setAttribute("questions", questions);
         return "/template/qna/list.jsp";
     }
@@ -148,6 +148,36 @@ public class QnaRouter {
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 페이지네이션 정보를 추출합니다.
+     * 페이지네이션 정보가 없으면 기본값을 반환합니다.
+     * @param request
+     * @return
+     */
+    private Pageable getPageable(HttpServletRequest request) {
+        try {
+            String page = request.getParameter("page");
+            String size = request.getParameter("size");
+            String sort = request.getParameter("sort");
+
+            if (page == null) {
+                page = "1";
+            }
+
+            if (size == null) {
+                size = "15";
+            }
+
+            if (sort == null) {
+                sort = "createdAt";
+            }
+
+            return new Pageable(Integer.parseInt(page), Integer.parseInt(size), sort);
+        } catch (RuntimeException e) {
+            return null;
         }
     }
 }
