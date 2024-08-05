@@ -9,10 +9,7 @@ import woowa.frame.core.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +32,8 @@ public class JdbcQuestionRepository implements QuestionRepository {
                        "title VARCHAR(255), " +
                        "content VARCHAR(255)," +
                        "userId VARCHAR(255)," +
-                       "status VARCHAR(20)" +
+                       "status VARCHAR(20)," +
+                       "createdAt DATETIME" +
                        ")";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -49,7 +47,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
 
     @Override
     public void save(Question question) {
-        String query = "INSERT INTO questions (authorName, title, content, userId, status) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO questions (authorName, title, content, userId, status, createdAt) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, question.getAuthorName());
@@ -57,6 +55,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
             ps.setString(3, question.getContent());
             ps.setString(4, question.getUserId());
             ps.setString(5, question.getStatus());
+            ps.setTimestamp(6, Timestamp.valueOf(question.getCreatedAt()));
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,7 +78,8 @@ public class JdbcQuestionRepository implements QuestionRepository {
                         rs.getString("title"),
                         rs.getString("content"),
                         rs.getString("userId"),
-                        rs.getString("status")
+                        rs.getString("status"),
+                        rs.getTimestamp("createdAt").toLocalDateTime()
                 );
                 idField.set(entity, id);
                 questions.add(entity);
@@ -107,7 +107,8 @@ public class JdbcQuestionRepository implements QuestionRepository {
                             rs.getString("title"),
                             rs.getString("content"),
                             rs.getString("userId"),
-                            rs.getString("status")
+                            rs.getString("status"),
+                            rs.getTimestamp("createdAt").toLocalDateTime()
                     );
                     idField.set(entity, id);
                     return entity;

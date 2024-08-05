@@ -8,6 +8,7 @@ import woowa.cafe.repository.QuestionRepository;
 import woowa.cafe.repository.ReplyRepository;
 import woowa.frame.core.annotation.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -22,7 +23,7 @@ public class QnaService {
     }
 
     public void createQna(CreateQuestionRequest request) {
-        Question question = new Question(request.authorName(), request.title(), request.content(), request.userId(), "ACTIVE");
+        Question question = new Question(request.authorName(), request.title(), request.content(), request.userId(), "ACTIVE", LocalDateTime.now());
         questionRepository.save(question);
     }
 
