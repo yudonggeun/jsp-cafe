@@ -48,13 +48,12 @@
                 <div class="col-md-3"></div>
                 <div class="col-md-6 text-center">
                     <ul class="pagination center-block" style="display:inline-block;">
-                        <li><a href="#">«</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">»</a></li>
+                        <% for (int i = 1; i <= pages.getTotalPages(); i++) {
+                            int pageNumber = i;
+                            int size = 15;
+                        %>
+                        <li><a href="/?page=<%=pageNumber%>&size=<%=size%>"><%=pageNumber%></a></li>
+                        <% } %>
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
