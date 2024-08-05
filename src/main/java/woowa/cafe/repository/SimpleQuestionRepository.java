@@ -43,4 +43,9 @@ public class SimpleQuestionRepository implements QuestionRepository {
     public void deleteById(String id) {
         database.remove(id);
     }
+
+    @Override
+    public long count() {
+        return database.size();
+    }
 }

@@ -16,4 +16,6 @@ public interface QuestionRepository {
     void update(Question question);
 
     void deleteById(String id);
+
+    long count();
 }

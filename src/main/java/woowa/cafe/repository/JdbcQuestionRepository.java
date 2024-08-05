@@ -167,4 +167,20 @@ public class JdbcQuestionRepository implements QuestionRepository {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public long count() {
+        String query = "SELECT COUNT(*) FROM questions WHERE status != 'DELETED'";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        throw new RuntimeException("count query error");
+    }
 }
