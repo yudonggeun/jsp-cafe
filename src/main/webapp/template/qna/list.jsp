@@ -20,8 +20,10 @@
         <div class="panel panel-default qna-list">
             <%@ page import="java.util.List" %>
             <%@ page import="woowa.cafe.dto.QuestionInfo" %>
+            <%@ page import="woowa.frame.web.collection.Page" %>
             <%
-                List<QuestionInfo> questions = (List<QuestionInfo>) request.getAttribute("questions");
+                Page<QuestionInfo> pages = (Page<QuestionInfo>) request.getAttribute("questions");
+                List<QuestionInfo> questions = pages.getContent();
             %>
             <ul class="list">
 
@@ -37,10 +39,6 @@
                                 <span class="time"><%=questionInfo.createdAt().toLocalDate().toString()%></span>
                                 <a href="./user/profile.html" class="author"><%=questionInfo.authorName()%></a>
                             </div>
-<%--                            <div class="reply" title="댓글">--%>
-<%--                                <i class="icon-reply"></i>--%>
-<%--                                <span class="point">12</span>--%>
-<%--                            </div>--%>
                         </div>
                     </div>
                 </li>
@@ -67,84 +65,6 @@
     </div>
 </div>
 
-<!--login modal-->
-<!--
-<div id="loginModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-  <div class="modal-content">
-      <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h2 class="text-center"><img src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="img-circle"><br>Login</h2>
-      </div>
-      <div class="modal-body">
-          <form class="form col-md-12 center-block">
-              <div class="form-group">
-                  <label for="userId">사용자 아이디</label>
-                  <input class="form-control" name="userId" placeholder="User ID">
-              </div>
-              <div class="form-group">
-                  <label for="password">비밀번호</label>
-                  <input type="password" class="form-control" name="password" placeholder="Password">
-              </div>
-              <div class="form-group">
-                  <button class="btn btn-primary btn-lg btn-block">로그인</button>
-                  <span class="pull-right"><a href="#registerModal" role="button" data-toggle="modal">회원가입</a></span>
-              </div>
-          </form>
-      </div>
-      <div class="modal-footer">
-          <div class="col-md-12">
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-      </div>
-      </div>
-  </div>
-  </div>
-</div>
--->
-
-<!--register modal-->
-<!--
-<div id="registerModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-  <div class="modal-content">
-      <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h2 class="text-center"><img src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100" class="img-circle"><br>회원가입</h2>
-      </div>
-      <div class="modal-body">
-          <form class="form col-md-12 center-block">
-              <div class="form-group">
-                  <label for="userId">사용자 아이디</label>
-                  <input class="form-control" id="userId" name="userId" placeholder="User ID">
-              </div>
-              <div class="form-group">
-                  <label for="password">비밀번호</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-              </div>
-              <div class="form-group">
-                  <label for="name">이름</label>
-                  <input class="form-control" id="name" name="name" placeholder="Name">
-              </div>
-              <div class="form-group">
-                  <label for="email">이메일</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-              </div>
-            <div class="form-group">
-              <button class="btn btn-primary btn-lg btn-block">회원가입</button>
-            </div>
-          </form>
-      </div>
-      <div class="modal-footer">
-          <div class="col-md-12">
-          <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-      </div>
-      </div>
-  </div>
-  </div>
-</div>
--->
-
-<!-- script references -->
 <script src="/static/js/jquery-2.2.0.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/scripts.js"></script>

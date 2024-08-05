@@ -8,6 +8,7 @@ import woowa.cafe.dto.request.CreateQuestionRequest;
 import woowa.cafe.repository.QuestionRepository;
 import woowa.cafe.repository.ReplyRepository;
 import woowa.frame.core.annotation.Component;
+import woowa.frame.web.collection.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,9 +29,8 @@ public class QnaService {
         questionRepository.save(question);
     }
 
-    public List<QuestionInfo> getQuestions(Pageable pageable) {
-        List<Question> questions = questionRepository.findAll(pageable);
-        return questions.stream()
+    public Page<QuestionInfo> getQuestions(Pageable pageable) {
+        List<QuestionInfo> questions = questionRepository.findAll(pageable).stream()
                 .map(question -> new QuestionInfo(
                         question.getId(),
                         question.getAuthorName(),
@@ -39,6 +39,8 @@ public class QnaService {
                         question.getCreatedAt()
                 ))
                 .toList();
+        long totalCount = questionRepository.count();
+        return new Page<>(questions, pageable.size(), totalCount);
     }
 
     public QuestionInfo getQuestion(String id) {

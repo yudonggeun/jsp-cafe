@@ -35,8 +35,7 @@ public class QnaRouter {
 
         Pageable pageable = getPageable(request);
 
-        List<QuestionInfo> questions = qnaService.getQuestions(pageable);
-        request.setAttribute("questions", questions);
+        request.setAttribute("questions", qnaService.getQuestions(pageable));
         return "/template/qna/list.jsp";
     }
 
@@ -154,6 +153,7 @@ public class QnaRouter {
     /**
      * 페이지네이션 정보를 추출합니다.
      * 페이지네이션 정보가 없으면 기본값을 반환합니다.
+     *
      * @param request
      * @return
      */
