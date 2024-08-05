@@ -34,7 +34,8 @@ public class QnaService {
                         question.getId(),
                         question.getAuthorName(),
                         question.getTitle(),
-                        question.getContent()
+                        question.getContent(),
+                        question.getCreatedAt()
                 ))
                 .toList();
     }
@@ -48,7 +49,8 @@ public class QnaService {
                 question.getId(),
                 question.getAuthorName(),
                 question.getTitle(),
-                question.getContent()
+                question.getContent(),
+                question.getCreatedAt()
         );
     }
 
@@ -66,7 +68,8 @@ public class QnaService {
                 question.getId(),
                 question.getAuthorName(),
                 question.getTitle(),
-                question.getContent()
+                question.getContent(),
+                question.getCreatedAt()
         );
     }
 

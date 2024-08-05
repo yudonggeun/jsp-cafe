@@ -34,7 +34,7 @@
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
-                                <span class="time"><%=questionInfo.getPostTime()%></span>
+                                <span class="time"><%=questionInfo.createdAt().toLocalDate().toString()%></span>
                                 <a href="./user/profile.html" class="author"><%=questionInfo.authorName()%></a>
                             </div>
 <%--                            <div class="reply" title="댓글">--%>

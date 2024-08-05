@@ -37,7 +37,7 @@
                             <a href="" class="article-author-name"><%=question.authorName()%>
                             </a>
                             <a href="" class="article-header-time" title="퍼머링크">
-                                <%=question.getPostTime()%>
+                                <%=question.createdAt().toLocalDate().toString()%>
                                 <i class="icon-link"></i>
                             </a>
                         </div>
