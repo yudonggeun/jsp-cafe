@@ -18,7 +18,7 @@ public class ReplyService {
     }
 
     public List<ReplyInfo> getAllReplies(String questionId) {
-        return replyRepository.findAllByQuestionId(questionId).stream()
+        return replyRepository.findAllByQuestionId(questionId, null).stream()
                 .map(reply -> new ReplyInfo(
                         reply.getId(),
                         reply.getContent(),
