@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import woowa.cafe.config.JdbcConfig;
 import woowa.cafe.domain.Question;
+import woowa.cafe.dto.Pageable;
 import woowa.frame.core.annotation.Component;
 import woowa.frame.core.annotation.Primary;
 
@@ -63,12 +64,21 @@ public class JdbcQuestionRepository implements QuestionRepository {
     }
 
     @Override
-    public List<Question> findAll() {
+    public List<Question> findAll(Pageable pageable) {
+        if (pageable == null) {
+            pageable = new Pageable(1, 15, "createdAt");
+        }
+
         List<Question> questions = new ArrayList<>();
-        String query = "SELECT * FROM questions WHERE status != 'DELETED'";
+        String query = "SELECT * FROM questions WHERE status != 'DELETED' ORDER BY " + pageable.sort() + " DESC LIMIT ?, ?;";
+
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = conn.prepareStatement(query)
+        ) {
+            ps.setLong(1, pageable.getOffset());
+            ps.setLong(2, pageable.getSize());
+
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("id");
                 Field idField = Question.class.getDeclaredField("id");

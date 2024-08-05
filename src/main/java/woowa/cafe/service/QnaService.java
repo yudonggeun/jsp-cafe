@@ -28,7 +28,7 @@ public class QnaService {
     }
 
     public List<QuestionInfo> getQuestions() {
-        List<Question> questions = questionRepository.findAll();
+        List<Question> questions = questionRepository.findAll(null);
         return questions.stream()
                 .map(question -> new QuestionInfo(
                         question.getId(),

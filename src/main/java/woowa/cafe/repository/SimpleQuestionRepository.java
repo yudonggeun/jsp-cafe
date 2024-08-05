@@ -1,6 +1,7 @@
 package woowa.cafe.repository;
 
 import woowa.cafe.domain.Question;
+import woowa.cafe.dto.Pageable;
 import woowa.frame.core.annotation.Component;
 
 import java.lang.reflect.Field;
@@ -25,8 +26,8 @@ public class SimpleQuestionRepository implements QuestionRepository {
         }
     }
 
-    public List<Question> findAll() {
-        return database.values().stream().toList();
+    public List<Question> findAll(Pageable pageable) {
+        return database.values().stream().toList().subList(pageable.getOffset(), pageable.getOffset() + pageable.size());
     }
 
     public Question findById(String id) {
