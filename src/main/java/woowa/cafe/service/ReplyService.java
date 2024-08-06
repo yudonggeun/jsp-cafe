@@ -1,7 +1,7 @@
 package woowa.cafe.service;
 
 import woowa.cafe.domain.Reply;
-import woowa.cafe.dto.Pageable;
+import woowa.cafe.dto.Offset;
 import woowa.cafe.dto.ReplyInfo;
 import woowa.cafe.dto.UserInfo;
 import woowa.cafe.repository.ReplyRepository;
@@ -19,7 +19,7 @@ public class ReplyService {
         this.replyRepository = replyRepository;
     }
 
-    public Page<ReplyInfo> getAllReplies(String questionId, Pageable pageable) {
+    public Page<ReplyInfo> getAllReplies(String questionId, Offset pageable) {
         List<ReplyInfo> replies = replyRepository.findAllByQuestionId(questionId, pageable).stream()
                 .map(reply -> new ReplyInfo(
                         reply.getId(),

@@ -119,9 +119,9 @@ public class QnaRouter {
     public String getQuestion(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getRequestURI().substring(10);
         QuestionInfo question = qnaService.getQuestion(id);
-        Pageable pageable = new Pageable(1, 5, "createdDate");
+        Offset offset = new Offset(0, 5);
 
-        Page<ReplyInfo> replies = replyService.getAllReplies(question.id(), pageable);
+        Page<ReplyInfo> replies = replyService.getAllReplies(question.id(), offset);
 
         if (question == null) {
             return "redirect:/question";

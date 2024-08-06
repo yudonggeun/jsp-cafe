@@ -2,7 +2,7 @@ package woowa.cafe.repository;
 
 import woowa.cafe.config.JdbcConfig;
 import woowa.cafe.domain.Reply;
-import woowa.cafe.dto.Pageable;
+import woowa.cafe.dto.Offset;
 import woowa.frame.core.annotation.Component;
 
 import javax.sql.DataSource;
@@ -86,22 +86,17 @@ public class JdbcReplyRepository implements ReplyRepository {
     }
 
     @Override
-    public List<Reply> findAllByQuestionId(String questionId, Pageable pageable) {
+    public List<Reply> findAllByQuestionId(String questionId, Offset offset) {
 
-        if (pageable == null) {
-            pageable = new Pageable(1, 5, "createdDate");
-        }
-
-        String query = "SELECT * FROM replies WHERE questionId = ? and status != 'DELETED' ORDER BY " +
-                       pageable.sort() + " DESC LIMIT ?, ?;";
+        String query = "SELECT * FROM replies WHERE questionId = ? and status != 'DELETED' ORDER BY createdDate DESC LIMIT ?, ?;";
         List<Reply> replies = new ArrayList<>();
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)
         ) {
             ps.setString(1, questionId);
-            ps.setLong(2, pageable.getOffset());
-            ps.setLong(3, pageable.getSize());
+            ps.setLong(2, offset.offset());
+            ps.setLong(3, offset.size());
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

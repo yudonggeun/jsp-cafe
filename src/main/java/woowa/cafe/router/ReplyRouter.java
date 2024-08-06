@@ -1,8 +1,8 @@
 package woowa.cafe.router;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import woowa.cafe.dto.Offset;
 import woowa.cafe.dto.Pageable;
 import woowa.cafe.dto.ReplyInfo;
 import woowa.cafe.dto.UserInfo;
@@ -26,8 +26,10 @@ public class ReplyRouter {
     public Map<String, Object> getReplies(HttpServletRequest request, HttpServletResponse response) {
         String url = request.getRequestURI();
         String id = url.substring(10, url.lastIndexOf("/reply"));
-        Pageable pageable = getReplyPageable(request);
-        Page<ReplyInfo> replies = replyService.getAllReplies(id, pageable);
+
+        Offset offset = getOffset(request);
+
+        Page<ReplyInfo> replies = replyService.getAllReplies(id, offset);
 
         return Map.of(
                 "message", "success : get replies",
@@ -35,34 +37,23 @@ public class ReplyRouter {
         );
     }
 
-    /**
-     * 댓글 페이지네이션 정보를 추출합니다.
-     * 만약 관련 정보를 입력받지 않았다면 기본 설정을 적용하여 반환합니다.
-     * <li>page : 1</li>
-     * <li>size : 5</li>
-     * <li>sort : createdDate</li>
-     */
-    private Pageable getReplyPageable(HttpServletRequest request) {
+    private Offset getOffset(HttpServletRequest request){
+
+        String offset = request.getParameter("offset");
+        String size = request.getParameter("size");
+
+        if (offset == null) {
+            offset = "0";
+        }
+
+        if (size == null) {
+            size = "5";
+        }
+
         try {
-            String page = request.getParameter("page");
-            String size = request.getParameter("size");
-            String sort = request.getParameter("sort");
-
-            if (page == null) {
-                page = "1";
-            }
-
-            if (size == null) {
-                size = "5";
-            }
-
-            if (sort == null) {
-                sort = "createdDate";
-            }
-
-            return new Pageable(Integer.parseInt(page), Integer.parseInt(size), sort);
+            return new Offset(Integer.parseInt(offset), Integer.parseInt(size));
         } catch (RuntimeException e) {
-            return null;
+            return new Offset(0, 5);
         }
     }
 
