@@ -36,6 +36,7 @@ public class QnaRouter {
         Pageable pageable = getQuestionPageable(request);
 
         request.setAttribute("questions", qnaService.getQuestions(pageable));
+        request.setAttribute("pageable", pageable);
         return "/template/qna/list.jsp";
     }
 

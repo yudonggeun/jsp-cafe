@@ -21,6 +21,7 @@
             <%@ page import="java.util.List" %>
             <%@ page import="woowa.cafe.dto.QuestionInfo" %>
             <%@ page import="woowa.frame.web.collection.Page" %>
+            <%@ page import="woowa.cafe.dto.Pageable" %>
             <%
                 Page<QuestionInfo> pages = (Page<QuestionInfo>) request.getAttribute("questions");
                 List<QuestionInfo> questions = pages.getContent();
@@ -32,12 +33,14 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="/question/<%=questionInfo.id()%>"><%=questionInfo.title()%></a>
+                                <a href="/question/<%=questionInfo.id()%>"><%=questionInfo.title()%>
+                                </a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time"><%=questionInfo.createdAt().toLocalDate().toString()%></span>
-                                <a href="./user/profile.html" class="author"><%=questionInfo.authorName()%></a>
+                                <a href="./user/profile.html" class="author"><%=questionInfo.authorName()%>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -47,12 +50,28 @@
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6 text-center">
+                    <%
+                        Pageable pageable = (Pageable) request.getAttribute("pageable");
+                        pages = (Page<QuestionInfo>) request.getAttribute("questions");
+                        int currentPage = pageable.page();
+                        long totalPages = pages.getTotalPages();
+                        int pageSize = 15;
+                        int startPage = ((currentPage - 1) / pageSize) * pageSize + 1;
+                        int endPage = (int) Math.min(startPage + pageSize - 1, totalPages);
+                    %>
+
                     <ul class="pagination center-block" style="display:inline-block;">
-                        <% for (int i = 1; i <= pages.getTotalPages(); i++) {
-                            int pageNumber = i;
-                            int size = 15;
-                        %>
-                        <li><a href="/?page=<%=pageNumber%>&size=<%=size%>"><%=pageNumber%></a></li>
+                        <% if (startPage > 1) { %>
+                        <li><a href="/?page=<%=startPage - 1%>&size=<%=pageSize%>">&laquo;</a></li>
+                        <% } %>
+                        <% for (int i = startPage; i <= endPage; i++) { %>
+                        <li class="<%= (i == currentPage) ? "active" : "" %>">
+                            <a href="/?page=<%=i%>&size=<%=pageSize%>"><%=i%>
+                            </a>
+                        </li>
+                        <% } %>
+                        <% if (endPage < totalPages) { %>
+                        <li><a href="/?page=<%=endPage + 1%>&size=<%=pageSize%>">&raquo;</a></li>
                         <% } %>
                     </ul>
                 </div>
