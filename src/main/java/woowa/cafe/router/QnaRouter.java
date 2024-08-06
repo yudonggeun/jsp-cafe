@@ -8,13 +8,13 @@ import woowa.cafe.service.QnaService;
 import woowa.cafe.service.ReplyService;
 import woowa.frame.web.annotation.HttpMapping;
 import woowa.frame.web.annotation.Router;
+import woowa.frame.web.collection.Page;
 import woowa.frame.web.parser.FormParser;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.List;
 import java.util.Map;
 
 @Router
@@ -33,7 +33,7 @@ public class QnaRouter {
     @HttpMapping(method = "GET", urlTemplate = "/")
     public String showQuestions(HttpServletRequest request, HttpServletResponse response) {
 
-        Pageable pageable = getPageable(request);
+        Pageable pageable = getQuestionPageable(request);
 
         request.setAttribute("questions", qnaService.getQuestions(pageable));
         return "/template/qna/list.jsp";
@@ -118,7 +118,9 @@ public class QnaRouter {
     public String getQuestion(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getRequestURI().substring(10);
         QuestionInfo question = qnaService.getQuestion(id);
-        List<ReplyInfo> replies = replyService.getAllReplies(question.id());
+        Pageable pageable = new Pageable(1, 5, "createdDate");
+
+        Page<ReplyInfo> replies = replyService.getAllReplies(question.id(), pageable);
 
         if (question == null) {
             return "redirect:/question";
@@ -151,13 +153,13 @@ public class QnaRouter {
     }
 
     /**
-     * 페이지네이션 정보를 추출합니다.
-     * 페이지네이션 정보가 없으면 기본값을 반환합니다.
-     *
-     * @param request
-     * @return
+     * 질문 게시글 페이지네이션 정보를 추출합니다.
+     * 만약 관련 정보를 입력받지 않았다면 기본 설정을 적용하여 반환합니다.
+     * <li>page : 1</li>
+     * <li>size : 15</li>
+     * <li>sort : createdAt</li>
      */
-    private Pageable getPageable(HttpServletRequest request) {
+    private Pageable getQuestionPageable(HttpServletRequest request) {
         try {
             String page = request.getParameter("page");
             String size = request.getParameter("size");

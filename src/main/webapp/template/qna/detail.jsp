@@ -1,6 +1,7 @@
 <%@ page import="woowa.cafe.dto.QuestionInfo" %>
 <%@ page import="woowa.cafe.dto.ReplyInfo" %>
 <%@ page import="java.util.List" %>
+<%@ page import="woowa.frame.web.collection.Page" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="kr">
@@ -80,11 +81,12 @@
                 </article>
 
                 <%
-                    List<ReplyInfo> replies = (List<ReplyInfo>) request.getAttribute("replies");
+                    Page<ReplyInfo> pages = (Page<ReplyInfo>) request.getAttribute("replies");
+                    List<ReplyInfo> replies = pages.getContent();
                 %>
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
-                        <p class="qna-comment-count"><strong id="reply-count"><%=replies.size()%>
+                        <p class="qna-comment-count"><strong id="reply-count"><%=pages.getTotalElements()%>
                         </strong>개의 의견</p>
                         <div class="qna-comment-slipp-articles">
                             <div id="reply-box">
