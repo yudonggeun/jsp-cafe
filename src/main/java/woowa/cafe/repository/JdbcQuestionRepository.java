@@ -70,7 +70,8 @@ public class JdbcQuestionRepository implements QuestionRepository {
         }
 
         List<Question> questions = new ArrayList<>();
-        String query = "SELECT * FROM questions WHERE status != 'DELETED' ORDER BY " + pageable.sort() + " DESC LIMIT ?, ?;";
+        String subquery = "SELECT id FROM questions WHERE status != 'DELETED' ORDER BY " + pageable.sort() + " DESC LIMIT ?, ?";
+        String query = "SELECT * FROM (" + subquery + ") as q1 JOIN questions as q2 on q1.id = q2.id;";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)
