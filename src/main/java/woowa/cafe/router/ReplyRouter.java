@@ -17,7 +17,6 @@ import java.util.Map;
 public class ReplyRouter {
 
     private final ReplyService replyService;
-    private final ObjectMapper om = new ObjectMapper();
 
     public ReplyRouter(ReplyService replyService) {
         this.replyService = replyService;
@@ -30,10 +29,9 @@ public class ReplyRouter {
         Pageable pageable = getReplyPageable(request);
         Page<ReplyInfo> replies = replyService.getAllReplies(id, pageable);
 
-        String replyPageInfo = om.convertValue(replies, String.class);
         return Map.of(
                 "message", "success : get replies",
-                "data", replyPageInfo
+                "data", replies
         );
     }
 
