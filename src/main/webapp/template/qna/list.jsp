@@ -56,8 +56,8 @@
                         int currentPage = pageable.page();
                         long totalPages = pages.getTotalPages();
                         int pageSize = 15;
-                        int startPage = ((currentPage - 1) / pageSize) * pageSize + 1;
-                        int endPage = (int) Math.min(startPage + pageSize - 1, totalPages);
+                        int startPage = ((currentPage - 1) / 5) * 5 + 1;
+                        int endPage = (int) Math.min(startPage + 5 - 1, totalPages);
                     %>
 
                     <ul class="pagination center-block" style="display:inline-block;">
