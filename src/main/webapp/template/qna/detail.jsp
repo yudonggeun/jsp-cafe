@@ -122,7 +122,7 @@
                                                 <button type="button" class="delete-answer-button"
                                                         onclick="{
                                                                 incrementReplyCount(-1);
-                                                                deleteReply('<%=reply.id()%>');
+                                                                deleteReply('<%=reply.questionId()%>','<%=reply.id()%>');
                                                                 }">삭제
                                                 </button>
                                             </li>
@@ -131,59 +131,16 @@
                                 </article>
                                 <%}%>
                             </div>
-                            <script>
-                                function deleteReply(replyId) {
-                                    let url = "/question/<%=question.id()%>/reply/" + replyId;
-
-                                    console.log("delete reply url : " + url);
-                                    fetch(url, {
-                                        method: 'DELETE'
-                                    }).then(response => {
-                                        if (response.ok) {
-                                            response.json().then(data => {
-                                                deleteElementById("reply-" + data.data.replyId);
-                                            })
-                                        } else {
-                                            alert('삭제에 실패했습니다.');
-                                        }
-                                    });
-                                }
-                            </script>
+                            <div>
+                                <button class="btn btn-success pull-right" type="button" onclick="getMoreReply(<%=question.id()%>)">더보기</button>
+                            </div>
                             <form class="submit-write">
                                 <div class="form-group" style="padding:14px;">
                                     <textarea id="replyContent" class="form-control"
                                               placeholder="Update your status"></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="button" onclick="createReply()">답변하기
+                                <button class="btn btn-success pull-right" type="button" onclick="createReply('<%=question.id()%>')">답변하기
                                 </button>
-                                <script>
-                                    function createReply() {
-                                        let url = "/question/<%=question.id()%>/reply";
-                                        let content = document.getElementById("replyContent").value;
-
-                                        let newForm = new FormData();
-                                        newForm.append("content", content);
-                                        let data = new URLSearchParams(newForm).toString();
-
-                                        fetch(url, {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-                                            },
-                                            body: data
-                                        }).then(response => {
-                                            if (response.ok) {
-                                                response.json().then(data => {
-                                                    const replyInfo = data.data;
-                                                    incrementReplyCount(1);
-                                                    addElementById('reply-box', replyHtml(replyInfo));
-                                                })
-                                            } else {
-                                                alert('답변에 실패했습니다.');
-                                            }
-                                        });
-                                    }
-                                </script>
                                 <div class="clearfix"/>
                             </form>
                         </div>
@@ -228,5 +185,6 @@
 <script src="/static/js/jquery-2.2.0.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/scripts.js"></script>
+<script src="/static/js/reply.js"></script>
 </body>
 </html>
