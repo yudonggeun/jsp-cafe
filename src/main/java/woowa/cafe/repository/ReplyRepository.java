@@ -12,7 +12,7 @@ public interface ReplyRepository {
     Reply findById(String id);
     void deleteById(String id);
     void deleteByQuestionId(String questionId);
-    long count();
+    long count(String questionId);
 
     boolean existsByQuestionIdAndNotUserId(String questionId, String userId);
 }

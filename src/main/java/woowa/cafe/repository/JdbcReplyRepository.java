@@ -177,10 +177,11 @@ public class JdbcReplyRepository implements ReplyRepository {
     }
 
     @Override
-    public long count() {
-        String query = "SELECT COUNT(*) FROM replies WHERE status != 'DELETED'";
+    public long count(String questionId) {
+        String query = "SELECT COUNT(*) FROM replies WHERE questionId = ? and status != 'DELETED'";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, questionId);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getLong(1);

@@ -32,7 +32,7 @@ public class ReplyService {
                 ))
                 .toList();
 
-        return new Page<>(replies, pageable.size(), replyRepository.count());
+        return new Page<>(replies, pageable.size(), replyRepository.count(questionId));
     }
 
     public ReplyInfo createReply(String questionId, String content, String userId, String authorName) {
