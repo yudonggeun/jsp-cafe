@@ -84,11 +84,11 @@ public class QnaRouter {
         String id = request.getRequestURI().substring(10);
         String title = params.get("title");
         String content = params.get("contents");
-        String userId = (String) request.getSession().getAttribute("userId");
+        UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
 
         UpdateQuestionRequest updateRequest = new UpdateQuestionRequest(
                 id,
-                userId,
+                userInfo.id(),
                 title,
                 content
         );
